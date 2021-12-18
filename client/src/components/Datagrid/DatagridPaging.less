@@ -1,0 +1,32 @@
+@import '../../styles/variables.less';
+
+.paging {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0.5rem;
+  border-top: 1px solid @border-color;
+  border-bottom: 1px solid @border-color;
+
+  &-button {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 3px;
+    background-color: white;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    width: 100px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: @hover-color;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      background-color: @container-background-color;
+      color: @text-color-secondary;
+    }
+  }
+}
