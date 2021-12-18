@@ -13,6 +13,9 @@ module.exports = {
     filename: 'js/[name].bundle.js'
   },
   devtool: 'source-map',
+  devServer: {
+    historyApiFallback: true,
+  },
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.ts', '.tsx']
   },
