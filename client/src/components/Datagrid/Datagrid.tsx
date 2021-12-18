@@ -13,6 +13,8 @@ export type DatagridProps<T> = {
   paging?: DatagridPagingProps;
 };
 
+// TODO: add sorting
+
 const Datagrid = <T extends Entity>({ data, columns, paging }: DatagridProps<T>) => {
   return (
     <div className="data-grid">
