@@ -1,0 +1,30 @@
+@import '../../styles/variables.less';
+
+.loader {
+  overflow: hidden;
+  position: relative;
+  background: @border-color;
+  height: 0.25rem;
+  margin: 0.5rem 0;
+
+  &-inner {
+    width: 0%;
+    height: 100%;
+    transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+    transition-duration: 300ms;
+    background-image: linear-gradient(to right, transparent 0%, @accent-color 50%, transparent 100%);
+    position: absolute;
+    will-change: left;
+    min-width: 50%;
+    animation: 1s ease 0s infinite normal none running loader-animation;
+  }
+}
+
+@keyframes loader-animation {
+  0% {
+    left: -40%;
+  }
+  100% {
+    left: 100%;
+  }
+}
