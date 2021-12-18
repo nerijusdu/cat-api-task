@@ -1,6 +1,7 @@
 import { Cat } from "../models/cat";
 import { GetListRequest } from "../models/get-list-request";
 import { Guid } from "../models/guid";
+import { PagedResponse } from "../models/paged-response";
 
 // TODO: use db
 export class CatService {
@@ -19,7 +20,10 @@ export class CatService {
       cats = cats.slice(request.page * request.pageSize, (request.page + 1) * request.pageSize);
     }
 
-    return cats;
+    return {
+      items: cats,
+      totalItems: this.cats.length
+    } as PagedResponse<Cat>;
   }
 
   getById(id: string) {

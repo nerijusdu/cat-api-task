@@ -16,6 +16,10 @@ export type DatagridProps<T> = {
 // TODO: add sorting
 
 const Datagrid = <T extends Entity>({ data, columns, paging }: DatagridProps<T>) => {
+  if (data.length === 0) {
+    return <div className="empty-message">Nothing to show.</div>;
+  }
+
   return (
     <div className="data-grid">
       <table className="data-table">

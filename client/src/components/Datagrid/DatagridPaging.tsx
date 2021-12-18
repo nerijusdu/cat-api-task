@@ -1,3 +1,4 @@
+import Button from '../Button/Button';
 import './DatagridPaging.less';
 
 export type DatagridPagingProps = {
@@ -17,23 +18,21 @@ const DatagridPaging : React.FC<DatagridPagingProps> = ({
 
   return (
     <div className="paging">
-      <button
-        className="paging-button"
+      <Button
         onClick={() => onPageChange(page-1)}
-        disabled={page === 0}
+        isDisabled={page === 0}
       >
         Previous
-      </button>
+      </Button>
 
-      <span>Page: {page}</span>
+      <span>Page: {page+1}</span>
 
-      <button
-        className="paging-button"
+      <Button
         onClick={() => onPageChange(page+1)}
-        disabled={page === totalPages-1}
+        isDisabled={page >= totalPages-1}
       >
         Next
-      </button>
+      </Button>
     </div>
   );
 };

@@ -4,11 +4,10 @@ export type SearchBoxProps = {
   onSearch: (search: string) => void;
 }
 
+// TODO: debounce
 const SearchBox : React.FC<SearchBoxProps> = ({ onSearch }) => {
   return (
-    <div className="search-box">
-      <input type="text" placeholder="Search..." onChange={(e) => onSearch(e.target.value)}/>
-    </div>
+    <input className="search-box" type="text" placeholder="Search..." onChange={(e) => onSearch(e.target.value)}/>
   );
 };
 

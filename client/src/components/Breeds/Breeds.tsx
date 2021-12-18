@@ -20,7 +20,7 @@ const columns: DatagridColumn<Breed>[] = [
     field: 'temperament',
   }
 ];
-
+// TODO: scope styles
 const Breeds : React.FC = () => {
   const [page, setPage] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
@@ -49,7 +49,9 @@ const Breeds : React.FC = () => {
 
   return (
     <>
-      <SearchBox onSearch={onSearch}/>
+      <div className="content-row">
+        <SearchBox onSearch={onSearch}/>
+      </div>
       {isLoading && <Loader />}
       <Datagrid
         data={visibleData}
