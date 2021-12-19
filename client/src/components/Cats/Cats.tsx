@@ -5,11 +5,11 @@ import { useState } from 'react';
 import { useQuery } from 'react-query';
 import Button from '../Button/Button';
 import './Cats.less';
-import SearchBox from '../SearchBox/SearchBox';
-import Modal from 'react-modal';
+import AddCatModal from './AddCatModal';
+import Input from '../Inputs/Input';
+import { useCatsPaged } from '../../hooks/api/useCats';
 
 const itemsPerPage = 10;
-const apiUrl = 'http://localhost:3000'; // move to env
 const columns: DatagridColumn<Cat>[] = [
   {
     title: 'Name',
@@ -26,28 +26,30 @@ const columns: DatagridColumn<Cat>[] = [
 ];
 
 const Cats : React.FC = () => {
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(true);
   const [page, setPage] = useState(0);
-  const [totalItems, setTotalItems] = useState(0);
-  const { data, isLoading } = useQuery<Cat[]>(['cats', page], async () => {
-    const response = await fetch(`${apiUrl}/cats?pageSize=${itemsPerPage}&page=${page}`);
-    const result = await response.json();
-    setTotalItems(result.totalItems);
-    return result.items;
-  });
+  const { data, totalItems, isLoading, refetch } = useCatsPaged(page, itemsPerPage);
 
   return (
     <>
-      <Modal isOpen={isModalOpen} onRequestClose={() => setModalOpen(false)}>
-        yeet
-      </Modal>
+      <AddCatModal
+        isOpen={isModalOpen}
+        onRequestClose={() => setModalOpen(false)}
+        onSubmit={() => {
+          refetch();
+          setModalOpen(false);
+        }}
+      />
+
       <div className="content-row">
-        <SearchBox onSearch={() => null} />
+        <Input type="text" placeholder="Search..." />
         <Button onClick={() => setModalOpen(true)} isPrimary>Add a cat</Button>
       </div>
+
       {isLoading && <Loader />}
+
       <Datagrid
-        data={data || []}
+        data={data}
         columns={columns}
         paging={{
           pageSize: itemsPerPage,

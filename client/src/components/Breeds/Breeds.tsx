@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import { useCatBreedsPaged } from "../../hooks/api/useCatBreeds";
 import { Breed } from "../../models/breed";
 import Datagrid, { DatagridColumn } from "../Datagrid/Datagrid";
+import Input from "../Inputs/Input";
 import Loader from "../Loader/Loader";
-import SearchBox from "../SearchBox/SearchBox";
 
 const itemsPerPage = 10;
 const columns: DatagridColumn<Breed>[] = [
@@ -23,13 +24,8 @@ const columns: DatagridColumn<Breed>[] = [
 // TODO: scope styles
 const Breeds : React.FC = () => {
   const [page, setPage] = useState(0);
-  const [totalItems, setTotalItems] = useState(0);
   const [visibleData, setVisibleData] = useState<Breed[]>([]);
-  const { data, isLoading } = useQuery<Breed[]>(['breeds', page], async() => {
-    const result = await fetch(`https://api.thecatapi.com/v1/breeds?limit=${itemsPerPage}&page=${page}`);
-    setTotalItems(Number(result.headers.get('Pagination-Count')));
-    return await result.json();
-  });
+  const { data, isLoading, totalItems } = useCatBreedsPaged(page, itemsPerPage);
 
   useEffect(() => {
     if (data) {
@@ -50,7 +46,7 @@ const Breeds : React.FC = () => {
   return (
     <>
       <div className="content-row">
-        <SearchBox onSearch={onSearch}/>
+        <Input type="text" placeholder="Search..." onChange={(e) => onSearch(e.target.value)}/>
       </div>
       {isLoading && <Loader />}
       <Datagrid
