@@ -5,6 +5,7 @@ import DatagridPaging, { DatagridPagingProps } from './DatagridPaging';
 export type DatagridColumn<T> = {
   title: string;
   field: keyof T & string;
+  customRender?: (item: T) => React.ReactNode;
 };
 
 export type DatagridProps<T> = {
@@ -35,11 +36,7 @@ const Datagrid = <T extends Entity>({ data, columns, paging }: DatagridProps<T>)
         <tbody>
           {data.map(item => (
             <tr key={item.id} className="data-table-row">
-              {columns.map(column => (
-                <td key={column.field}>
-                  {item[column.field]}
-                </td>
-              ))}
+              {columns.map(column => <DataGridCell key={column.field} item={item} column={column} />)}
             </tr>
           ))}
         </tbody>
@@ -47,6 +44,19 @@ const Datagrid = <T extends Entity>({ data, columns, paging }: DatagridProps<T>)
       {paging && <DatagridPaging {...paging}/>}
     </div>
   );
+};
+
+type DataGridCellProps<T> = {
+  item: T;
+  column: DatagridColumn<T>;
+};
+
+const DataGridCell = <T extends Entity>({ item, column }: DataGridCellProps<T>) => {
+  if (column.customRender) {
+    return <td>{column.customRender(item)}</td>;
+  }
+
+  return <td>{item[column.field]}</td>;
 };
 
 export default Datagrid;

@@ -5,13 +5,15 @@ import { PagedResponse } from "../models/paged-response";
 
 // TODO: use db
 export class CatService {
-  private cats: Cat[] = [];
+  private cats: Cat[] = initialData;
 
   getAll(request: GetListRequest<Cat> = {}) {
-    let cats = this.cats;
+    let cats = [...this.cats];
     if (request.searchTerm) {
       const searchTerm = request.searchTerm.toLowerCase();
-      return cats.filter(cat => cat.name.toLowerCase().includes(searchTerm.toLowerCase()));
+      cats = cats.filter(cat =>
+        cat.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        cat.breedName.toLowerCase().includes(searchTerm.toLowerCase()));
     }
 
     cats = cats.sort(CatService.sortCats(request.sortBy, request.sortDirection));
@@ -63,5 +65,50 @@ export class CatService {
     }
   }
 }
+
+const initialData: Cat[] = [
+  {
+    id: Guid.newGuid(),
+    name: 'Garfield',
+    breedId: 'abob',
+    breedName: 'American Bobtail',
+    weight: 10
+  },
+  {
+    id: Guid.newGuid(),
+    name: 'Sprinkles',
+    breedId: 'bali',
+    breedName: 'Balinese',
+    weight: 5
+  },
+  {
+    id: Guid.newGuid(),
+    name: 'Sylvester',
+    breedId: 'beng',
+    breedName: 'Bengal',
+    weight: 8
+  },
+  {
+    id: Guid.newGuid(),
+    name: 'Pudding',
+    breedId: 'birm',
+    breedName: 'Birman',
+    weight: 3
+  },
+  {
+    id: Guid.newGuid(),
+    name: 'Whiskers',
+    breedId: 'bomb',
+    breedName: 'Bombay',
+    weight: 4
+  },
+  {
+    id: Guid.newGuid(),
+    name: 'Mr. Bigglesworth',
+    breedId: 'cypr',
+    breedName: 'Cyprus',
+    weight: 2
+  }
+];
 
 export default new CatService();
