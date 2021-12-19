@@ -41,19 +41,26 @@ const AddCatModal : React.FC<AddCatModalProps> = ({ isOpen, onRequestClose, onSu
       <div className="add-cat-modal">
         <h1>Add a cat</h1>
         <form onSubmit={handleSubmit((data) => mutate(data))}>
-          <label>Name</label>
-          <Input type="text" {...register('name', { required: 'Please enter a name' })} />
-          {/* TODO: show errors */}
+          <Input
+            label="Name"
+            type="text"
+            error={errors.name?.message}
+            {...register('name', { required: 'Please enter a name' })}
+          />
 
-          <label>Breed</label>
           <Select
             {...register('breedId', { required: 'Please select breed' })}
             options={breeds?.map(breed => ({ value: breed.id, label: breed.name }))}
-            isLoading={isLoadingBreeds}
+            label="Breed"
+            error={errors.breedId?.message}
           />
 
-          <label>Weight (in KG)</label>
-          <Input type="number" {...register('weight', { required: 'Please enter weight' })} />
+          <Input
+            type="number"
+            label="Weight (in KG)"
+            error={errors.weight?.message}
+            {...register('weight', { required: 'Please enter weight' })}
+          />
           <Button type="submit" isPrimary>Add</Button>
         </form>
       </div>

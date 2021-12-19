@@ -3,14 +3,19 @@ import './Select.less';
 
 export type SelectProps = SelectHTMLAttributes<HTMLSelectElement> & {
   options?: { value: string; label: string; }[];
-  isLoading?: boolean;
+  label?: string;
+  error?: string;
 }
 
-const Select : React.FC<SelectProps> = forwardRef(({ options, isLoading, ...props }, ref: React.Ref<HTMLSelectElement>) => {
+const Select : React.FC<SelectProps> = forwardRef(({ options, label, error, ...props }, ref: React.Ref<HTMLSelectElement>) => {
   return (
-    <select className="select" {...props} ref={ref}>
-      {!isLoading && options && options.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
-    </select>
+    <div className="select-wrapper">
+      {label && <label className="label">{label}</label>}
+      <select className="select" {...props} ref={ref}>
+        {options && options.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+      </select>
+      {error && <span className="error">{error}</span>}
+    </div>
   );
 });
 

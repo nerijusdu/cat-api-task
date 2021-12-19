@@ -1,11 +1,22 @@
 @import '../../styles/variables.less';
 
-.input {
-  min-width: 300px;
-  font-size: 1rem;
-  padding-inline-start: 1rem;
-  height: 2rem;
-  border-radius: 3px;
-  border: 1px solid @border-color;
-  background: transparent;
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  .input {
+    min-width: 300px;
+    font-size: 1rem;
+    padding-inline-start: 1rem;
+    height: 2rem;
+    border-radius: 3px;
+    border: 1px solid @border-color;
+    background: transparent;
+  }
+
+  .error {
+    color: @error-color;
+    font-size: 0.9rem;
+  }
 }

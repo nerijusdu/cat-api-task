@@ -1,11 +1,18 @@
 import './Input.less';
 import React, { forwardRef, InputHTMLAttributes } from "react";
 
-export type InputProps = InputHTMLAttributes<HTMLInputElement> & { };
+export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
+  label?: string;
+  error?: string;
+};
 
-const Input : React.FC<InputProps> = forwardRef((props, ref: React.Ref<HTMLInputElement>) => {
+const Input : React.FC<InputProps> = forwardRef(({ label, error, ...props }, ref: React.Ref<HTMLInputElement>) => {
   return (
-    <input className="input" {...props} ref={ref} />
+    <div className="input-wrapper">
+      {label && <label className="label">{label}</label>}
+      <input className="input" {...props} ref={ref} />
+      {error && <span className="error">{error}</span>}
+    </div>
   );
 });
 
