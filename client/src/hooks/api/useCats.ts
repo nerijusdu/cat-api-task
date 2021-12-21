@@ -5,7 +5,7 @@ import { Cat } from "../../models/cat";
 import { PagedList } from "../../models/paged-list";
 import { SortDirection } from "../../models/sort-direction";
 
-const apiUrl = 'http://localhost:3000'; //TODO: move to env
+const apiUrl = process.env.API_URL || 'http://localhost:3000';
 
 export type UseCatsPagedProps = {
   page: number;

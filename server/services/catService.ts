@@ -3,7 +3,6 @@ import { GetListRequest } from "../models/get-list-request";
 import { Guid } from "../models/guid";
 import { PagedResponse } from "../models/paged-response";
 
-// TODO: use db
 export class CatService {
   private cats: Cat[] = initialData;
 
