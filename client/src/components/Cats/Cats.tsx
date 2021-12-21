@@ -1,13 +1,14 @@
 import Datagrid, { DatagridColumn } from '../Datagrid/Datagrid';
 import { Cat } from '../../models/cat';
 import Loader from '../Loader/Loader';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../Button/Button';
 import './Cats.less';
 import AddCatModal from './AddCatModal';
 import Input from '../Inputs/Input';
 import { useCatsPaged, useRemoveCat } from '../../hooks/api/useCats';
 import useDebouncedState from '../../hooks/useDebouncedState';
+import { SortDirection } from '../../models/sort-direction';
 
 const itemsPerPage = 10;
 
@@ -15,11 +16,14 @@ const Cats : React.FC = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useDebouncedState('', 500);
   const [page, setPage] = useState(0);
-  const { data, totalItems, isLoading, refetch } = useCatsPaged(page, itemsPerPage, searchTerm);
+  const [sortData, setSortData] = useState<{sortBy: string; sortDirection: SortDirection;}>({ sortBy: 'name', sortDirection: 'asc'});
+  const { data, totalItems, isLoading, refetch } = useCatsPaged({page, itemsPerPage, searchTerm, ...sortData});
   const { mutate: removeCat } = useRemoveCat({ onSuccess: () => refetch() });
+  useEffect(() => { refetch() }, [searchTerm, sortData]);
+
   const columns: DatagridColumn<Cat>[] = [
-    { title: 'Name', field: 'name' },
-    { title: 'Breed', field: 'breedName' },
+    { title: 'Name', field: 'name', isSortable: true },
+    { title: 'Breed', field: 'breedName', isSortable: true },
     { title: 'Weight', field: 'weight' },
     {
       title: '',
@@ -53,6 +57,7 @@ const Cats : React.FC = () => {
       <Datagrid
         data={data}
         columns={columns}
+        onSort={(field, direction) => setSortData({ sortBy: field, sortDirection: direction })}
         paging={{
           pageSize: itemsPerPage,
           page,

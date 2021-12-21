@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useQuery } from "react-query";
 import { useCatBreedsPaged } from "../../hooks/api/useCatBreeds";
 import { Breed } from "../../models/breed";
 import Datagrid, { DatagridColumn } from "../Datagrid/Datagrid";

@@ -3,12 +3,21 @@ import { useMutation, UseMutationOptions, useQuery } from "react-query";
 import { Breed } from "../../models/breed";
 import { Cat } from "../../models/cat";
 import { PagedList } from "../../models/paged-list";
+import { SortDirection } from "../../models/sort-direction";
 
-const apiUrl = 'http://localhost:3000'; // move to env
+const apiUrl = 'http://localhost:3000'; //TODO: move to env
 
-const useCatsPaged = (page: number, itemsPerPage: number, searchTerm?: string) => {
+export type UseCatsPagedProps = {
+  page: number;
+  itemsPerPage: number;
+  searchTerm?: string;
+  sortBy?: string;
+  sortDirection?: SortDirection;
+}
+
+const useCatsPaged = ({ page, itemsPerPage, searchTerm, sortBy, sortDirection }: UseCatsPagedProps) => {
   const result = useQuery<PagedList<Cat>>(['cats', page, searchTerm || ''], async () => {
-    const response = await fetch(`${apiUrl}/cats?pageSize=${itemsPerPage}&page=${page}&searchTerm=${searchTerm || ''}`);
+    const response = await fetch(`${apiUrl}/cats?pageSize=${itemsPerPage}&page=${page}&searchTerm=${searchTerm || ''}&sortBy=${sortBy || ''}&sortDirection=${sortDirection || ''}`);
     return await response.json();
   });
 
