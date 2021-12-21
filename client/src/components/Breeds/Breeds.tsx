@@ -11,10 +11,12 @@ const columns: DatagridColumn<Breed>[] = [
   {
     title: 'Name',
     field: 'name',
+    isSortable: true,
   },
   {
     title: 'Origin',
     field: 'origin',
+    isSortable: true,
   },
   {
     title: 'Temperament',
@@ -42,6 +44,17 @@ const Breeds : React.FC = () => {
     const filteredData = (data || []).filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
     setVisibleData(filteredData);
   };
+  const sortData = (field: keyof Breed, direction: 'asc' | 'desc') => {
+    const sortedData = [...visibleData].sort((a, b) => {
+      if (direction === 'asc') {
+        return a[field] > b[field] ? 1 : -1;
+      }
+
+      return a[field] < b[field] ? 1 : -1;
+    });
+
+    setVisibleData(sortedData);
+  };
 
   return (
     <>
@@ -52,6 +65,7 @@ const Breeds : React.FC = () => {
       <Datagrid
         data={visibleData}
         columns={columns}
+        onSort={sortData}
         paging={{
           pageSize: itemsPerPage,
           page,
